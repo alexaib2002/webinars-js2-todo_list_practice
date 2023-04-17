@@ -2,39 +2,46 @@
 <html>
 <head>
 	<meta charset='utf-8'>
-	<title>Page Title</title>
+	<title>TODO List</title>
 </head>
 <body>
 	<!--Base structure-->
 	<h1>Todo List Sample</h1>
-	<i>Elements will be modified by DOM manipulation</i>
+	<label for="task-input">Introduce una nueva tarea:</label>
+	<input id="task-input" type="text">
+	<button id="task-submit">Agregar</button>
 	<ul id="list-content"></ul>
 	<!--Scripting-->
 	<script text="text/javascript">
+		// Globals
+		var i = 0
+
+		// Function definition
+		const appendTask = (task) => {
+			let dom_list = document.getElementById('list-content')
+			let item = document.createElement('li')
+			item.textContent = task
+			item.id = `task_${i++}`
+			dom_list.append(item)
+		}
+
+		const onClickListener = (event) => {
+			let taskInput = document.getElementById('task-input')
+			appendTask(taskInput.value)
+		}
+
+		// Initial load
 		let items = [
 			"OS maintenance",
 			"Filesystem backups",
 			"User permissions daily check",
 			"Connectivity tests"
 		]
-		let dom_list = document.getElementById('list-content')
-		// Oneline, by using innerHTML property
-		// items.forEach(task =>dom_list.innerHTML += `<li>${task}</li>`);
-		// Creating element with DOM
-		let i = 0
-		items.forEach(task => {
-			let item = document.createElement('li')
-			item.textContent = task
-			item.id = `task_${i++}`
-			dom_list.append(item)
-		});
+		items.forEach(appendTask);
 
-		// Yield 2s before removing element
-		setTimeout(() => {
-			// Remove element
-			dom_list.removeChild(document.getElementById('task_0'))
-		}, 2000)
-		console.log("Added tasks via DOM manipulation")
+		// Button listener
+		let submitBtn = document.getElementById('task-submit')
+		submitBtn.addEventListener('click', onClickListener)
 	</script>
 </body>
 </html>
